@@ -56,7 +56,6 @@ city = st.sidebar.selectbox('City', ['Islamabad', 'Karachi', 'Lahore', 'Rawalpin
                                      'Shikarpur', 'Shorkot', 'Sialkot', 'Sibi', 'Skardu', 'Sudhnoti', 'Sujawal', 'Sukkur', 'Swabi', 'Swat', 'Talagang', 'Tando Adam', 'Tando Allahyar', 'Tando Bago',
                                      'Tando Muhammad Khan', 'Tank', 'Taxila', 'Tharparkar', 'Thatta', 'Toba Tek Singh', 'Torkham', 'Turbat', 'Umarkot', 'Upper Dir', 'Vehari', 'Wah', 'Wana', 'Wazirabad',
                                      'Waziristan', 'Yazman', 'Zhob'])
-location = st.sidebar.text_input('Location')
 property_type = st.sidebar.selectbox('Property Type', ['Homes', 'Plots', 'Commercial'])
 price_range = st.sidebar.slider('Price (PKR)', 0, 100000000, (0, 5000000))
 area = st.sidebar.slider('Area (Marla)', 0, 100, (0, 10))
@@ -68,7 +67,6 @@ submit_button = st.sidebar.button(label='Scrape')
 # If the button is pressed
 if submit_button:
     st.write(f'Searching for properties in {city}...')
-    st.write(f'Location: {location}\t TYPE {type(location)}')
     st.write(f'Property Type: {property_type}')
     st.write(f'Price Range: {price_range}')
     st.write(f'Area: {area}')
