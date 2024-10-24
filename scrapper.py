@@ -1,11 +1,11 @@
 from bs4 import BeautifulSoup
-import os
+import os, requests
 
 BASE_URL = 'https://www.zameen.com/'
 
 # GET REQUEST  
 def request_server(url):
-    pass
+    return requests.get(url)
 
 def city_mapping(city):
     
@@ -75,6 +75,16 @@ def scrape(purpose, city, price_range, area_range, beds, baths ):
     purpose = 'Homes' if purpose == "BUY" else 'Rentals'
     city = city_mapping(city)
 
-    for i in range(1,10):
-        url = BASE_URL+f'/{purpose}/{city}{i}.html{filters}'
-        return url
+    page=1
+    while(True):
+
+        url = BASE_URL+f'/{purpose}/{city}{page}.html{filters}'
+        response = request_server(url)
+        
+        if response.status_code == 404:
+            break
+        else:
+            
+            soup = BeautifulSoup(response.content, 'html.parser')
+            ad_div = soup.findAll('li', {'role':'article'})
+            
