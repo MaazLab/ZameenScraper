@@ -36,7 +36,7 @@ st.markdown(f"""
 st.sidebar.header("Input Parameters")
 
 # Radio button for Buy/Sell selection
-transaction_type = st.sidebar.radio("Transaction Type", ["BUY", "RENT"])
+purpose = st.sidebar.radio("Transaction Type", ["BUY", "RENT"])
 
 # Create the form inside the sidebar
 city = st.sidebar.selectbox('City', ['Islamabad', 'Karachi', 'Lahore', 'Rawalpindi', 'Abbottabad', 'Abdul Hakim', 'Ahmedpur East', 'Ali Masjid', 'Alipur', 'Arifwala', 'Astore', 'Attock','Awaran', 'Badin', 'Bagh', 
@@ -57,9 +57,10 @@ city = st.sidebar.selectbox('City', ['Islamabad', 'Karachi', 'Lahore', 'Rawalpin
                                      'Tando Muhammad Khan', 'Tank', 'Taxila', 'Tharparkar', 'Thatta', 'Toba Tek Singh', 'Torkham', 'Turbat', 'Umarkot', 'Upper Dir', 'Vehari', 'Wah', 'Wana', 'Wazirabad',
                                      'Waziristan', 'Yazman', 'Zhob'])
 property_type = st.sidebar.selectbox('Property Type', ['Homes', 'Plots'])
-price_range = st.sidebar.slider('Price (PKR)', 0, 100000000, (0, 5000000))
-area = st.sidebar.slider('Area (Marla)', 0, 100, (0, 10))
-beds = st.sidebar.selectbox('Beds', ['All', '1', '2', '3', '4', '5+'])
+price_range = st.sidebar.slider('PRICE (PKR)', 0, 100000000, (0, 5000000))
+area_range = st.sidebar.slider('Area (Marla)', 0, 100, (0, 10))
+beds = st.sidebar.multiselect('BEDS', ['All', 'Studio', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10+'])
+baths = st.sidebar.multiselect('BATHS', ['All', '1', '2', '3', '4', '5', '6+'])
 
 # Button to submit the form
 submit_button = st.sidebar.button(label='Scrape')
@@ -69,7 +70,7 @@ if submit_button:
     st.write(f'Searching for properties in {city}...')
     st.write(f'Property Type: {property_type}')
     st.write(f'Price Range: {price_range}')
-    st.write(f'Area: {area}')
+    st.write(f'Area: {area_range}')
     st.write(f'Beds: {beds}')
-    st.write(f'transaction_type: {transaction_type}')
-    st.write(scrapper.scrape(transaction_type=transaction_type, city=city ))
+    st.write(f'purpose: {purpose}')
+    st.write(scrapper.scrape(purpose=purpose, city=city, price_range=price_range,area_range=area_range, beds=beds, baths=baths ))

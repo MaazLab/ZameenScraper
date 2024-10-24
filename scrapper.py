@@ -48,12 +48,33 @@ def city_mapping(city):
                 'Tando Bago': 'Tando_Bago-11700-', 'Tando Muhammad Khan': 'Tando_Muhammad_Khan-13166-', 'Tank': 'Tank-17740-', 'Taxila': 'Taxila-464-', 'Tharparkar': 'Tharparkar-12439-',
                 'Thatta': 'Thatta-1729-', 'Toba Tek Singh': 'Toba_Tek_Singh-1658-', 'Torkham': 'Torkham-17741-', 'Turbat': 'Turbat-12271-', 'Umarkot': 'Umarkot-17742-', 'Upper Dir': 'Upper_Dir-17743-', 
                 'Vehari': 'Vehari-1432-', 'Wah': 'Wah-459-', 'Wana': 'Wana-17744-', 'Wazirabad': 'Wazirabad-1395-', 'Waziristan': 'Waziristan-1765-', 'Yazman': 'Yazman-12504-', 'Zhob': 'Zhob-1739-'}
+    return city_mapper[city]
 
 # Main Scrapping process
-def scrape(transaction_type, city ):
+def scrape(purpose, city, price_range, area_range, beds, baths ):
 
-    # URL setting a/c to transaction type
-    url = os.path.join(BASE_URL,'Homes') if transaction_type == "BUY" else os.path.join(BASE_URL,'Rentals')
+    price_min , price_max = price_range
+    area_min, area_max = area_range
+
+    filters = f'?price_min={price_min}&price_max={price_max}&area_min={area_min*20.903184}&area_max={area_max*20.903184}'
+
+    if 'All' in beds:
+        pass
+    else:
+        beds = '&beds_in='+'%2C'.join(beds).replace('+','%2B').replace('Studio','0')
+        filters+= beds
+        print(beds)
     
-    url = url+f'/{city}-1-1.html'
-    return url
+    if 'All' in baths:
+        pass
+    else:
+        baths = '&baths_in='+'%2C'.join(baths).replace('+','%2B')
+        filters+= baths
+        print(baths)
+    
+    purpose = 'Homes' if purpose == "BUY" else 'Rentals'
+    city = city_mapping(city)
+
+    for i in range(1,10):
+        url = BASE_URL+f'/{purpose}/{city}{i}.html{filters}'
+        return url
