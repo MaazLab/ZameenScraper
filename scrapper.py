@@ -3,10 +3,6 @@ import os, requests
 
 BASE_URL = 'https://www.zameen.com/'
 
-# GET REQUEST  
-def request_server(url):
-    return requests.get(url)
-
 def city_mapping(city):
     
     city_mapper = { 'Islamabad': 'Islamabad-3-', 'Karachi': 'Karachi-2-', 'Lahore': 'Lahore-1-', 'Rawalpindi': 'Rawalpindi-41-', 'Abbottabad': 'Abbottabad-385-', 
@@ -79,12 +75,22 @@ def scrape(purpose, city, price_range, area_range, beds, baths ):
     while(True):
 
         url = BASE_URL+f'/{purpose}/{city}{page}.html{filters}'
-        response = request_server(url)
+        response = requests.get(url)
         
         if response.status_code == 404:
             break
         else:
             
             soup = BeautifulSoup(response.content, 'html.parser')
-            ad_div = soup.findAll('li', {'role':'article'})
+            ad_divs = soup.findAll('li', {'role':'article'})
             
+            for ad_div in ad_divs:
+
+                details_url = BASE_URL+ad_div.find('div', {'class':'_2a2e3d21'}).find('a').get('href')
+                detail_res = requests.get(details_url)
+                details_soup = BeautifulSoup(detail_res.content, 'html.parser')
+                ad_heading = details_soup.find('h1', {'class': 'aea614fd'}).text
+                ad_description = details_soup.find('span', {'class':'_3547dac9'}).text
+                ad_details_list = details_soup.find('ul', {'class': '_3dc8d08d'}).find_all('li')
+
+                
